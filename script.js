@@ -2,8 +2,9 @@
 var token;
 var arr = []
 
-var xhr1 = new XMLHttpRequest();
 
+var xhr1 = new XMLHttpRequest();
+ $("#random").append('<img src="301.gif">')
 var result;
 console.log('axios')
 axios.post('https://bhagavadgita.io/auth/oauth/token?client_id=KGfqjoXQ7o2CM3PnfgHPe4mLOV5sHtnjA869dd6M&client_secret=cXAfAA7W35ufAbpJPjROIfBO1PgGr19iLuT8qaIDtnDxG1E1GB&grant_type=client_credentials&scope=verse chapter')
@@ -38,6 +39,7 @@ const myfunc = tok => {
 
 
 function display22(obj5) {
+    $("#random").empty()
     var ran = Math.floor(Math.random() * 18)
     $("#random").append("<h2>" + obj5[ran].text + obj5[ran].meaning + "</h2>")
 }
