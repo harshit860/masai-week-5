@@ -1,3 +1,4 @@
+
 var token;
 var arr = []
 
@@ -5,48 +6,38 @@ var xhr1 = new XMLHttpRequest();
 
 var result;
 
-xhr1.onload = function () {
-
-    if (xhr1.status == 200) {
-
-        console.log(JSON.parse(xhr1.response))
-        result = JSON.parse(xhr1.response)
-        token = result.access_token;
+axios.post('https://bhagavadgita.io/auth/oauth/token?client_id=KGfqjoXQ7o2CM3PnfgHPe4mLOV5sHtnjA869dd6M&client_secret=cXAfAA7W35ufAbpJPjROIfBO1PgGr19iLuT8qaIDtnDxG1E1GB&grant_type=client_credentials&scope=verse chapter')
+.then(resp => {
+    if(resp.status == 200)
+    {
+        token = resp.data.access_token
         myfunc(token)
-
-        arr[0] = result.access_token
-
+        
+        arr[0] = resp.data.access_token
     }
-    else {
-        console.log("Error Code is:" + xhr1.status);
-    }
-}
+})
+.catch(err => console.log(err))
 
-xhr1.open('POST', 'https://bhagavadgita.io/auth/oauth/token?client_id=KGfqjoXQ7o2CM3PnfgHPe4mLOV5sHtnjA869dd6M&client_secret=cXAfAA7W35ufAbpJPjROIfBO1PgGr19iLuT8qaIDtnDxG1E1GB&grant_type=client_credentials&scope=verse chapter')
-xhr1.setRequestHeader('accept', 'application/json');
-xhr1.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-xhr1.send();
-console.log(token)
+
+
 var obj4 = 0;
 var obj5 = 0;
 var gita_all = new XMLHttpRequest();
 
 const myfunc = tok => {
     console.log('start of myfunc', token)
-    gita_all.open('GET', 'https://bhagavadgita.io/api/v1/verses?access_token=' + tok);
-    gita_all.send();
-    gita_all.onload = function () {
-        if (gita_all.status == 200) {
-            obj4 = gita_all.response;
-            obj5 = JSON.parse(obj4)
-            display22(obj5)
-            console.log(obj5);
+    axios.get(`https://bhagavadgita.io/api/v1/verses?access_token=${tok}`)
+    .then( response => {
+        if( response.status == 200 )
+        {
+            console.log(response.data)
+            display22(response.data)
         }
-        else {
-            console.log(gita_all.status)
-        }
-    }
+    })
 }
+
+
+
 function display22(obj5) {
     var ran = Math.floor(Math.random() * 18)
     $("#random").append("<h2>" + obj5[ran].text + obj5[ran].meaning + "</h2>")
